@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penginapan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app">
+    <h1> Penginapan</h1>
+
+    <div class="search">
+      <input type="text" v-model="searchQuery" placeholder="Cari penginapan...">
+      <button @click="search">Cari</button>
+    </div>
+
+    <div class="rooms">
+      <div v-for="room in filteredRooms" :key="room.id" class="room">
+        <h2>{{ room.name }}</h2>
+        <p>Harga: {{ room.price }}</p>
+        <p>Tamu: {{ room.guest }}</p>
+        <button @click="addToCart(room)">Tambah</button>
+      </div>
+    </div>
+    <!-- ... Bagian HTML sebelumnya ... -->
+
+<div class="cart">
+  <h2>Keranjang</h2>
+  <div>
+    <label for="name">Nama:</label>
+    <input type="text" id="name" v-model="name">
+  </div>
+  <div>
+    <label for="date">Tanggal Pesan:</label>
+    <input type="date" id="date" v-model="date">
+  </div>
+  <div>
+    <label for="guests">Jumlah Orang:</label>
+    <input type="number" id="guests" v-model="guests">
+  </div>
+  <div v-for="item in cart" :key="item.room.id" class="cart-item">
+    <p>{{ item.room.name }}</p> 
+    <p>Harga: {{ item.room.price }}</p>
+    <p>Jumlah Orang: {{ item.guests }}</p>
+    <button @click="deleteFromCart(item)">Hapus</button>
+  </div>
+  <p>Total: {{ total }}</p>
+  <!-- Periksa apakah nama, tanggal pesan, dan setidaknya satu kamar telah dipilih sebelum checkout -->
+  <button @click="saveOrder" :disabled="!name || !date || cart.length === 0">checkout</button>
+  <!-- Tampilkan pesan kesalahan jika informasi belum lengkap -->
+  <p v-if="!name || !date || cart.length === 0"></p>
+</div>
+
+<!-- ... Bagian HTML setelahnya ... -->
+
+
+
+    <div class="orders">
+      <h2>Pemesanan</h2>
+      <div v-for="order in orders" :key="order.id" class="order">
+        <p>Nama: {{ order.name }}</p>
+        <p>Tanggal Pesan: {{ order.date }}</p>
+        <ul>
+          <li v-for="item in order.items" :key="item.room.id">{{ item.room.name }} - {{ item.room.price }} - {{ item.guests }} orang</li>
+        </ul> 
+        <p>Total: {{ order.total }}</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
